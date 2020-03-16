@@ -1,6 +1,7 @@
 body {
   font-family: 'Josefin Sans', sans-serif;
   background-color: #F7ADAC;
+  color: #664B45;
 }
 
 textarea {
@@ -9,6 +10,7 @@ textarea {
 
 header, h1, h2 {
     background-color: #664B45;
+    color: #F7ADAC;
     text-align: center;
 }
 

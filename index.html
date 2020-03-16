@@ -27,7 +27,10 @@
         <div class="row">
             <div class = "col-4" id="citySearch">
                 Search for a City:
-                <button><i class="fas fa-search"></i></button>
+                <form id="cityForm">
+                    <input type="text" id="cityInput">
+                    <button type="submit" id="addCityButton"><i class="fas fa-search"></i></button>
+                </form>
                 <div id="cityButtons">
 
                 </div>
@@ -43,6 +46,31 @@
             </div>
 
 <script src="script.js">
+    //an array to hold all of the cities that are saved to buttons
+    var cities = [];
+
+    function displayButtons() {
+        $("#buttons").empty();
+
+        cities.forEach(city){
+            var newBtn = $("<button>");
+            newBtn.addClass("city");
+            newBtn.attr("name", city);
+            newBtn.text(city);
+            $("#buttons").append(newBtn);
+        }
+    }
+
+    $("#addCityButton").on("click", function (event){
+        event.preventDefault();
+
+        var city = $("#cityInput").val().trim();
+
+        cities.push(city);
+
+        displayButtons();
+    })
+
 
 </script>
 
