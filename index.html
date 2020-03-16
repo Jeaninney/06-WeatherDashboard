@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Weather Dashboard</title>
+<!-- Added link to the jQuery Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- Added link to the Moment.js to post the current date -->
+<script src="./moment.min.js"></script>
+<!-- Added a link to Bootstrap-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<!-- Added a link for Google Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Handlee|Josefin+Sans&display=swap" rel="stylesheet">
+<!-- Add Fontawesome for search button -->
+<script src="https://kit.fontawesome.com/0336854c82.js" crossorigin="anonymous"></script>
+<!-- link to my own CSS -->
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <header><h1>Jeaninney's Weather Dashboard</h1>
+        <h2 id="today">Today</h2>
+        </header>
+    <div class="container">
+        <div class="row">
+            <div class = "col-4" id="citySearch">
+                Search for a City:
+                <button><i class="fas fa-search"></i></button>
+                <div id="cityButtons">
+
+                </div>
+
+            </div>
+            <div class = "col-8">
+                <div class = "row" id="cityInfo">
+                    City Info
+                </div>
+                <div class = "row" id="forecast">
+                    5-Day Forecast:
+                </div> 
+            </div>
+
+<script src="script.js">
+
+</script>
+
+
+</body>
+
+</html>

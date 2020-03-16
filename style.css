@@ -1,0 +1,14 @@
+body {
+  font-family: 'Josefin Sans', sans-serif;
+  background-color: #F7ADAC;
+}
+
+textarea {
+    font-family: 'Handlee', cursive;
+}
+
+header, h1, h2 {
+    background-color: #664B45;
+    text-align: center;
+}
+
