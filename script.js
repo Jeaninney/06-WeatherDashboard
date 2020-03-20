@@ -4,11 +4,61 @@
 //past is .bg-dark
 //present is .bg-warning
 //future is .bg-success
+
+//this loads all of the HTML before running any JS
 $(function () {
 
+// these 2 lines set the date at the top of the page
 var now = moment();
 $("#today").text(now.format("dddd, MMMM Do YYYY"));
 
+//this is the array where I'm storing my saved cities
+var cities = [];
+
+
+// console.log(citiesString);
+// // setting the parsed string of cities to my city array
+// var cities = JSON.parse(citiesString);
+// console.log(cities);
+
+function displayButtons() {
+    $("#cityButtons").empty(); //clears the buttons area
+    //getting the String of saved cities from local storage
+    var citiesString = localStorage.getItem("cities");
+    console.log(citiesString);
+    if (citiesString != null) { 
+        cities = JSON.parse(citiesString);
+        console.log(cities);
+        cities.forEach(buildButtons) //adds a button for each item in the cities arry
+    }
+} 
+displayButtons();    
+    
+function buildButtons (city, index) {
+    
+    var newBtn = $("<button>");
+    newBtn.addClass("city mx-auto w-100");
+    newBtn.attr("name", city);
+    newBtn.text(city);
+    $("#cityButtons").append(newBtn);
+    $("#cityButtons").append($("<br>"));
+
+}
+    
+
+$("#addCityButton").on("click", function (event){
+    event.preventDefault();
+
+    var city = $("#cityInput").val().trim();
+
+    cities.push(city);
+    var cityString = JSON.stringify(cities);
+    localStorage.setItem("cities",cityString);
+    console.log(cityString);
+    displayButtons();
+})
+
+/////////////////////////////
 var currenthour = now.format("H");
 
 function init(){
