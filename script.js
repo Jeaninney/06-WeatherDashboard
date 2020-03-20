@@ -10,10 +10,13 @@ $(function () {
 
 // these 2 lines set the date at the top of the page
 var now = moment();
-$("#today").text(now.format("dddd, MMMM Do YYYY"));
+var nowFormatted = now.format("dddd, MMMM Do YYYY");
+$("#today").text(nowFormatted);
 
 //this is the array where I'm storing my saved cities
 var cities = [];
+
+var fetchedInfo;
 
 
 // console.log(citiesString);
@@ -37,7 +40,7 @@ displayButtons();
 function buildButtons (city, index) {
     
     var newBtn = $("<button>");
-    newBtn.addClass("city mx-auto w-100");
+    newBtn.addClass("city mx-auto w-100 text-left");
     newBtn.attr("name", city);
     newBtn.text(city);
     $("#cityButtons").append(newBtn);
@@ -48,9 +51,7 @@ function buildButtons (city, index) {
 
 $("#addCityButton").on("click", function (event){
     event.preventDefault();
-
     var city = $("#cityInput").val().trim();
-
     cities.push(city);
     var cityString = JSON.stringify(cities);
     localStorage.setItem("cities",cityString);
@@ -58,101 +59,51 @@ $("#addCityButton").on("click", function (event){
     displayButtons();
 })
 
-/////////////////////////////
-var currenthour = now.format("H");
-
-function init(){
-    //cycling through each of the scheduling blocks and setting their
-    //color based on the time 
-    $(".hourblocktext").each(function (index) {
-        var thisvalue = $(this).attr("value");
-        
-        // console.log(thisvalue);
-        // console.log(currenthour);
-
-        //this if will make the block of time that matches the current hour yellow
-        if (currenthour == thisvalue) {
-            $(this).addClass("bg-warning");
-        }
-        //this will make time blocks in the past turn dark grey
-        else if (currenthour < thisvalue) {
-            $(this).addClass("bg-success");
-        }
-        //this will make time blocks in the future green
-        else {
-            $(this).addClass("text-light bg-dark");
-        }
-        
-        var whichEntry = $(this).attr("which");
-        //setting the value of the entry to show what is stored locally
-        var storedText = localStorage.getItem(whichEntry);
-        console.log(whichEntry);
-        if (storedText != null){
-            
-            $(this).text(storedText);
-        }
-        
-        // $(".hourblocktext").text = localStorage.getItem()
-
-    } )
-}
-init();
-
-$("button").on("click", function (event) {
+$(".city").on("click",function (event) {
     event.preventDefault();
-    var whichEntry = $(this).attr("which");
-    console.log(whichEntry);
-    
-    if (whichEntry == "9am"){
-        var store = $("#nine");
-        console.log(store.val());
-        localStorage.setItem(whichEntry, store.val());
-    }
-    else if (whichEntry == "10am"){
-        var store = $("#ten");
-        console.log(store.val());
-        localStorage.setItem(whichEntry, store.val());
-    }
-    else if (whichEntry == "11am"){
-        var store = $("#eleven");
-        console.log(store.val());
-        localStorage.setItem(whichEntry, store.val());
-    }
-    else if (whichEntry == "12pm"){
-        var store = $("#twelve");
-        console.log(store.val());
-        localStorage.setItem(whichEntry, store.val());
-    }
-    else if (whichEntry == "1pm"){
-        var store = $("#one");
-        console.log(store.val());
-        localStorage.setItem(whichEntry, store.val());
-    }
-    else if (whichEntry == "2pm"){
-        var store = $("#two");
-        console.log(store.val());
-        localStorage.setItem(whichEntry, store.val());
-    }
-    else if (whichEntry == "3pm"){
-        var store = $("#three");
-        console.log(store.val());
-        localStorage.setItem(whichEntry, store.val());
-    }
-    else if (whichEntry == "4pm"){
-        var store = $("#four");
-        console.log(store.val());
-        localStorage.setItem(whichEntry, store.val());
-    }
-    else {
-        var store = $("#five");
-        console.log(store.val());
-        localStorage.setItem(whichEntry, store.val());
-    }
-
-
-
+    var cityName = $(this).attr("name");
+    console.log(cityName);
+    getWeatherInfo(cityName);
+    console.log(fetchedInfo);
+    displayCityInfo(cityName);
 
 })
 
+function displayCityInfo(city) {
+    $("#cityInfo").empty();
+    var firstLine = city + " " + nowFormatted;
+    var headline = $("<h3>");
+    headline.text(firstLine);
+    $("#cityInfo").append(headline);
 
+}
+
+function getWeatherInfo(city){
+    console.log(city);
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&appid=69d1653fc61ce085ac6426f019836bb0";
+    console.log(queryURL);
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    })
+        .then(function(response) {
+        console.log(response);
+        fetchedInfo = response;
+      });
+}
+//////////////////////
+// var queryURL = "https://api.openweathermap.org/data/2.5/weather?" +
+//       "q=Bujumbura,Burundi&appid=c74c1b5d674b62a4c8a1b4ee5fc625ad";
+
+//     // Here we run our AJAX call to the OpenWeatherMap API
+//     $.ajax({
+//       url: queryURL,
+//       method: "GET"
+//     })
+//       // We store all of the retrieved data inside of an object called "response"
+//       .then(function(response) {
+
+//         // Log the queryURL
+//         console.log(queryURL);
+/////////////////////////////
 })
