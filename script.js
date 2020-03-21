@@ -46,6 +46,10 @@ function displayButtons() {
     }
 } 
 displayButtons();    
+var lastCity =localStorage.getItem("lastCity");
+if (lastCity != null) {
+    getWeatherInfo(localStorage.getItem("lastCity"));
+}
     
 function buildButtons (city, index) {
     
@@ -67,6 +71,9 @@ $("#addCityButton").on("click", function (event){
     localStorage.setItem("cities",cityString);
     console.log(cityString);
     displayButtons();
+    getWeatherInfo(city);
+    var lastCity = city;
+    localStorage.setItem("lastCity", lastCity);
 })
 
 $(".city").on("click",function (event) {
@@ -74,21 +81,21 @@ $(".city").on("click",function (event) {
     var cityName = $(this).attr("name");
     console.log(cityName);
     getWeatherInfo(cityName);
-    console.log(fetchedInfo);
-
+    var lastCity = cityName;
+    localStorage.setItem("lastCity", lastCity);
 })
 
 function displayCityInfo(city) {
-    $("#cityInfo").empty();
-    var firstLine = city.cityName + " " + city.date;
-    var headline = $("<h3>");
-    headline.text(firstLine);
-    var weatherIconImage = $("<img>");
-    weatherIconImage.attr('src', city.weatherIcon)
-    weatherIconImage.attr('alt', "Icon of the current weather");
+    $("#cityInfo").empty(); //clears the are with the City Info
+    var firstLine = city.cityName + " " + city.date; //puts together the city name and date so it's easier to work with
+    var headline = $("<h3>"); // creates a new h3 tag
+    headline.text(firstLine); // adds the city name and date as the text to the h3 tag
+    var weatherIconImage = $("<img>"); // creates a new image tag
+    weatherIconImage.attr('src', city.weatherIcon) // sets the source url for the image tag tot he url stored in the city object
+    weatherIconImage.attr('alt', "Icon of the current weather"); 
     weatherIconImage.attr('height', "35");
     var tempDiv = $("<div>");
-    tempDiv.text("Temperature: " + city.temperature + "°F").addClass("row");
+    tempDiv.text("Temperature: " + city.temperature + "°F");
     var humDiv = $("<div>");
     humDiv.text("Humidity: " + city.humidity + "%");
     var windDiv = $("<div>");
@@ -100,12 +107,17 @@ function displayCityInfo(city) {
     uvSpan.text(city.uvIndex);
     $("#cityInfo").append(headline);
     $("#cityInfo").append(weatherIconImage);
-    $("#cityInfo").append($("p"));
+    $("#cityInfo").append("<p> </p>");
 
     $("#cityInfo").append(tempDiv);
+
+    $("#cityInfo").append($("p"));
     $("#cityInfo").append(humDiv);
+    $("#cityInfo").append($("p"));
     $("#cityInfo").append(windDiv);
+    $("#cityInfo").append($("p"));
     $("#cityInfo").append(uvDiv);
+    
     $("#cityInfo").append(uvSpan);
 
 }
@@ -158,23 +170,7 @@ function getWeatherInfo(city){
             displayCityInfo(cityInfo);
 
     })
-//http://api.openweathermap.org/data/2.5/uvi?appid=703e3e1e706645b8108c2ea06fb28f0e&lat=-83&lon=42
       });
 
 }
-//////////////////////
-// var queryURL = "https://api.openweathermap.org/data/2.5/weather?" +
-//       "q=Bujumbura,Burundi&appid=c74c1b5d674b62a4c8a1b4ee5fc625ad";
-
-//     // Here we run our AJAX call to the OpenWeatherMap API
-//     $.ajax({
-//       url: queryURL,
-//       method: "GET"
-//     })
-//       // We store all of the retrieved data inside of an object called "response"
-//       .then(function(response) {
-
-//         // Log the queryURL
-//         console.log(queryURL);
-/////////////////////////////
 })
