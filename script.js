@@ -177,10 +177,12 @@ function getForecast(city){
             console.log(now);
 
             var selectedHours = [7,15,23,31,39];
-
+            var displayDate = moment();
             for (i=0; i<selectedHours.length; i++) {
-                var futureDate = now.add(1,'d');
-                futureDate = futureDate.format('l');
+                // var displayDate = moment();
+                console.log(displayDate);
+                displayDate = displayDate.add(1,'d');
+                var futureDate = displayDate.format('l');
                 var temp = response.list[selectedHours[i]].main.temp;
                 temp = "Temp: "+temp+"°F";
                 var icon = response.list[selectedHours[i]].weather[0].icon;
