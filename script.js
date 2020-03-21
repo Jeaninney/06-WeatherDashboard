@@ -49,6 +49,7 @@ displayButtons();
 var lastCity =localStorage.getItem("lastCity");
 if (lastCity != null) {
     getWeatherInfo(localStorage.getItem("lastCity"));
+    getForecast(localStorage.getItem("lastCity"));
 }
     
 function buildButtons (city, index) {
@@ -72,6 +73,7 @@ $("#addCityButton").on("click", function (event){
     console.log(cityString);
     displayButtons();
     getWeatherInfo(city);
+    getForecast(city);
     var lastCity = city;
     localStorage.setItem("lastCity", lastCity);
 })
@@ -81,6 +83,7 @@ $(".city").on("click",function (event) {
     var cityName = $(this).attr("name");
     console.log(cityName);
     getWeatherInfo(cityName);
+    getForecast(cityName);
     var lastCity = cityName;
     localStorage.setItem("lastCity", lastCity);
 })
@@ -173,4 +176,20 @@ function getWeatherInfo(city){
       });
 
 }
+///////api.openweathermap.org/data/2.5/forecast?q={city name}&appid={your api key}
+function getForecast(city){
+    console.log(city);
+    var queryURL = "http://api.openweathermap.org/data/2.5/forecast?q="+city+"&units=imperial&appid="+key;
+    console.log(queryURL);
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    })
+        .then(function(response) {
+            console.log("Forecast");
+            console.log(response);
+    
+        })
+    }
+/////////
 })
