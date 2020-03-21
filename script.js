@@ -17,6 +17,15 @@ $("#today").text(nowFormatted);
 var cities = [];
 
 var fetchedInfo;
+var weatherIcon;
+var temp;
+var humidity;
+var windSpd;
+var uvInd;
+var lat;
+var lon;
+var key = "69d1653fc61ce085ac6426f019836bb0";
+var condition;
 
 
 // console.log(citiesString);
@@ -77,10 +86,9 @@ function displayCityInfo(city) {
     $("#cityInfo").append(headline);
 
 }
-
 function getWeatherInfo(city){
     console.log(city);
-    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&appid=69d1653fc61ce085ac6426f019836bb0";
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&units=imperial&appid="+key;
     console.log(queryURL);
     $.ajax({
         url: queryURL,
@@ -88,8 +96,32 @@ function getWeatherInfo(city){
     })
         .then(function(response) {
         console.log(response);
-        fetchedInfo = response;
+        weatherIcon = (response.weather[0].icon);
+        temp = (response.main.temp);
+        humidity = (response.main.humidity);
+        windSpd = (response.wind.speed);
+        lat = (response.coord.lat);
+        lon = (response.coord.lon);
+        console.log("end here");
+        queryURL = "http://api.openweathermap.org/data/2.5/uvi?appid="+key+"&lat="+lat+"&lon="+lon;
+        console.log(queryURL);
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }) .then (function(response) {
+            console.log(response);
+            uvInd = (response.value);
+            if (uvInd < 2) {
+                condition = "favorable";
+            } else if (uvInd < 5) {
+                condition = "moderate";
+            } else {
+                condition = "severe";            }
+
+    })
+//http://api.openweathermap.org/data/2.5/uvi?appid=703e3e1e706645b8108c2ea06fb28f0e&lat=-83&lon=42
       });
+
 }
 //////////////////////
 // var queryURL = "https://api.openweathermap.org/data/2.5/weather?" +
