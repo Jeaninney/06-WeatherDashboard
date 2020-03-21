@@ -17,4 +17,12 @@ header, h1, h2 {
 #citySearch {
   background-color: #fde8e8;
 }
-
+.low {
+  background-color: green;
+}
+.moderate {
+  background-color: orange;
+}
+.severe {
+  background-color: red;
+}

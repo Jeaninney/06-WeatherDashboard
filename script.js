@@ -11,11 +11,12 @@ $(function () {
 // these 2 lines set the date at the top of the page
 var now = moment();
 var nowFormatted = now.format("dddd, MMMM Do YYYY");
+var nowDate = now.format('l');
 $("#today").text(nowFormatted);
 
 //this is the array where I'm storing my saved cities
 var cities = [];
-
+var cityName;
 var fetchedInfo;
 var weatherIcon;
 var temp;
@@ -74,16 +75,38 @@ $(".city").on("click",function (event) {
     console.log(cityName);
     getWeatherInfo(cityName);
     console.log(fetchedInfo);
-    displayCityInfo(cityName);
 
 })
 
 function displayCityInfo(city) {
     $("#cityInfo").empty();
-    var firstLine = city + " " + nowFormatted;
+    var firstLine = city.cityName + " " + city.date;
     var headline = $("<h3>");
     headline.text(firstLine);
+    var weatherIconImage = $("<img>");
+    weatherIconImage.attr('src', city.weatherIcon)
+    weatherIconImage.attr('alt', "Icon of the current weather");
+    weatherIconImage.attr('height', "35");
+    var tempDiv = $("<div>");
+    tempDiv.text("Temperature: " + city.temperature + "°F").addClass("row");
+    var humDiv = $("<div>");
+    humDiv.text("Humidity: " + city.humidity + "%");
+    var windDiv = $("<div>");
+    windDiv.text("Wind Speed: " + city.windSpeed + " MPH");
+    var uvDiv = $("<div>");
+    uvDiv.text("UV Index: ");
+    var uvSpan = $("<span>");
+    uvSpan.addClass(city.condition);
+    uvSpan.text(city.uvIndex);
     $("#cityInfo").append(headline);
+    $("#cityInfo").append(weatherIconImage);
+    $("#cityInfo").append($("p"));
+
+    $("#cityInfo").append(tempDiv);
+    $("#cityInfo").append(humDiv);
+    $("#cityInfo").append(windDiv);
+    $("#cityInfo").append(uvDiv);
+    $("#cityInfo").append(uvSpan);
 
 }
 function getWeatherInfo(city){
@@ -96,7 +119,9 @@ function getWeatherInfo(city){
     })
         .then(function(response) {
         console.log(response);
+        cityName = (response.name);
         weatherIcon = (response.weather[0].icon);
+        weatherIcon = "http://openweathermap.org/img/wn/"+weatherIcon+"@2x.png";
         temp = (response.main.temp);
         humidity = (response.main.humidity);
         windSpd = (response.wind.speed);
@@ -112,11 +137,25 @@ function getWeatherInfo(city){
             console.log(response);
             uvInd = (response.value);
             if (uvInd < 2) {
-                condition = "favorable";
+                condition = "bg-success";
             } else if (uvInd < 5) {
-                condition = "moderate";
+                condition = "bg-warning";
             } else {
-                condition = "severe";            }
+                condition = "bg-danger";            
+            }
+            //all info is ready to go!
+            var cityInfo = {
+                "cityName": cityName,
+                "date": nowDate,
+                "weatherIcon": weatherIcon,
+                "temperature": temp,
+                "humidity": humidity,
+                "windSpeed": windSpd,
+                "uvIndex": uvInd,
+                "condition": condition
+            }
+            console.log(cityInfo);
+            displayCityInfo(cityInfo);
 
     })
 //http://api.openweathermap.org/data/2.5/uvi?appid=703e3e1e706645b8108c2ea06fb28f0e&lat=-83&lon=42
