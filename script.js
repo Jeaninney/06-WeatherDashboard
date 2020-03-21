@@ -121,14 +121,14 @@ function getWeatherInfo(city){
         console.log(response);
         cityName = (response.name);
         weatherIcon = (response.weather[0].icon);
-        weatherIcon = "http://openweathermap.org/img/wn/"+weatherIcon+"@2x.png";
+        weatherIcon = "https://openweathermap.org/img/wn/"+weatherIcon+"@2x.png";
         temp = (response.main.temp);
         humidity = (response.main.humidity);
         windSpd = (response.wind.speed);
         lat = (response.coord.lat);
         lon = (response.coord.lon);
         console.log("end here");
-        queryURL = "http://api.openweathermap.org/data/2.5/uvi?appid="+key+"&lat="+lat+"&lon="+lon;
+        queryURL = "https://api.openweathermap.org/data/2.5/uvi?appid="+key+"&lat="+lat+"&lon="+lon;
         console.log(queryURL);
         $.ajax({
             url: queryURL,
@@ -165,7 +165,7 @@ function getWeatherInfo(city){
 function getForecast(city){
     $("#forecast").empty();
     console.log(city);
-    var queryURL = "http://api.openweathermap.org/data/2.5/forecast?q="+city+"&units=imperial&appid="+key;
+    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units=imperial&appid="+key;
     console.log(queryURL);
     $.ajax({
         url: queryURL,
@@ -186,7 +186,7 @@ function getForecast(city){
                 var temp = response.list[selectedHours[i]].main.temp;
                 temp = "Temp: "+temp+"°F";
                 var icon = response.list[selectedHours[i]].weather[0].icon;
-                icon = "http://openweathermap.org/img/wn/"+icon+"@2x.png";
+                icon = "https://openweathermap.org/img/wn/"+icon+"@2x.png";
                 var newImg = $("<img>");
                 newImg.attr('src', icon);
                 newImg.attr('alt',"Weather Icon");
