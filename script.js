@@ -1,10 +1,3 @@
-//moment("2019-06-04 15:35").isSame("2019-04-06", "hour"); - would return false, not the same
-//isBefore, isAfter, isSameOrBefore
-
-//past is .bg-dark
-//present is .bg-warning
-//future is .bg-success
-
 //this loads all of the HTML before running any JS
 $(function () {
 
@@ -17,7 +10,6 @@ $("#today").text(nowFormatted);
 //this is the array where I'm storing my saved cities
 var cities = [];
 var cityName;
-var fetchedInfo;
 var weatherIcon;
 var temp;
 var humidity;
@@ -92,11 +84,11 @@ function displayCityInfo(city) {
     $("#cityInfo").empty(); //clears the are with the City Info
     var firstLine = city.cityName + " " + city.date; //puts together the city name and date so it's easier to work with
     var headline = $("<h3>"); // creates a new h3 tag
-    headline.text(firstLine); // adds the city name and date as the text to the h3 tag
     var weatherIconImage = $("<img>"); // creates a new image tag
     weatherIconImage.attr('src', city.weatherIcon) // sets the source url for the image tag tot he url stored in the city object
     weatherIconImage.attr('alt', "Icon of the current weather"); 
     weatherIconImage.attr('height', "35");
+    headline.html(firstLine+"<img src = "+city.weatherIcon+" alt = \"Weather Icon\" height = 45>"); // adds the city name and date as the text to the h3 tag
     var tempDiv = $("<div>");
     tempDiv.text("Temperature: " + city.temperature + "°F");
     var humDiv = $("<div>");
@@ -104,24 +96,17 @@ function displayCityInfo(city) {
     var windDiv = $("<div>");
     windDiv.text("Wind Speed: " + city.windSpeed + " MPH");
     var uvDiv = $("<div>");
-    uvDiv.text("UV Index: ");
-    var uvSpan = $("<span>");
-    uvSpan.addClass(city.condition);
-    uvSpan.text(city.uvIndex);
+    uvDiv.html("UV Index: <span class = "+city.condition+">"+city.uvIndex+"</span>");
+
     $("#cityInfo").append(headline);
-    $("#cityInfo").append(weatherIconImage);
+
     $("#cityInfo").append("<p> </p>");
 
     $("#cityInfo").append(tempDiv);
-
-    $("#cityInfo").append($("p"));
     $("#cityInfo").append(humDiv);
-    $("#cityInfo").append($("p"));
     $("#cityInfo").append(windDiv);
-    $("#cityInfo").append($("p"));
     $("#cityInfo").append(uvDiv);
     
-    $("#cityInfo").append(uvSpan);
 
 }
 function getWeatherInfo(city){
