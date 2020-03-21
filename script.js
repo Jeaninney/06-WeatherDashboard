@@ -178,6 +178,7 @@ function getWeatherInfo(city){
 }
 ///////api.openweathermap.org/data/2.5/forecast?q={city name}&appid={your api key}
 function getForecast(city){
+    $("#forecast").empty();
     console.log(city);
     var queryURL = "http://api.openweathermap.org/data/2.5/forecast?q="+city+"&units=imperial&appid="+key;
     console.log(queryURL);
@@ -188,7 +189,31 @@ function getForecast(city){
         .then(function(response) {
             console.log("Forecast");
             console.log(response);
-    
+            console.log(now);
+
+            var selectedHours = [7,15,23,31,39];
+
+            for (i=0; i<selectedHours.length; i++) {
+                var futureDate = now.add(1,'d');
+                futureDate = futureDate.format('l');
+                var temp = response.list[selectedHours[i]].main.temp;
+                temp = "Temp: "+temp+"°F";
+                var icon = response.list[selectedHours[i]].weather[0].icon;
+                icon = "http://openweathermap.org/img/wn/"+icon+"@2x.png";
+                var newImg = $("<img>");
+                newImg.attr('src', icon);
+                newImg.attr('alt',"Weather Icon");
+                var humid = response.list[selectedHours[i]].main.humidity;
+                humid = "Humidity: "+humid+"%";
+                var newDiv = $("<div>");
+                var thisID = "forecast" + i;
+                newDiv.addClass("card text-white bg-primary m-2 card-body float-left");
+                newDiv.attr("id", thisID);
+                newDiv.html(futureDate+"<br><img src = "+icon+" alt = \"Weather Icon\" ><br>"+temp+"<br>"+humid);
+                $("#forecast").append(newDiv);
+            }
+
+
         })
     }
 /////////
